@@ -1,0 +1,7 @@
+#Starting BD Docker Container
+docker run --name sc_postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_USER=smartclass -e POSTGRES_DB=smartclass -d postgres
+
+#Running
+	docker exec -it sc_postgres bash
+and after, run psql into container
+	psql -h localhost -U smartclass
