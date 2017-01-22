@@ -10,6 +10,15 @@ var config = {
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
+var createTableCursos = function() {
+  const client = new pg.Client(config);
+
+  //making table for courses
+  client.connect();
+  query = client.query('CREATE TABLE IF NOT EXISTS cursos(n_curso INTEGER PRIMARY KEY NOT NULL, nome VARCHAR(30) NOT NULL, ano_criacao INTEGER NOT NULL, enade INTEGER NOT NULL, guia_estudante INTEGER, descricao VARCHAR(2000))');
+  query.on('end', () => { client.end(); console.log("Tabela cursos criada com sucesso\n");});
+};
+
 var createTableEmentas = function() {
   const client = new pg.Client(config);
 
