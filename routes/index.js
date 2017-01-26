@@ -1,8 +1,8 @@
-qconst express = require('express');
+const express = require('express');
 const router = express.Router();
 const pg = require('pg');
 const path = require('path');
-const bikeController = require('../controllers/bikeController');
+const cursosController = require('../controllers/cursosController');
 var config = {
   user: 'postgres', //env var: PGUSER
   database: 'postgres', //env var: PGDATABASE
@@ -19,15 +19,17 @@ router.get('/', function(req, res, next) {
 });
 
 //Add User
-router.post('/api/v1/todos', bikeController.addBike);
+//router.post('/api/v1/todos', bikeController.addBike);
 //Read BD
-router.get('/api/v1/todos', bikeController.readBike);
+//router.get('/api/v1/todos', bikeController.readBike);
 
 //Update data
-router.put('/api/v1/todos/:todo_id', bikeController.updateBike);
+//router.put('/api/v1/todos/:todo_id', bikeController.updateBike);
 
 //Delete data
-router.delete('/api/v1/todos/:todo_id', bikeController.deleteBike);
+//router.delete('/api/v1/todos/:todo_id', bikeController.deleteBike);
 
+//Cursos
+router.post('/api/v1/curso', cursosController.addCurso);
 
 module.exports = router;
