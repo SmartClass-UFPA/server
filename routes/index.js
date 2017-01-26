@@ -18,17 +18,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-//Add User
-//router.post('/api/v1/todos', bikeController.addBike);
-//Read BD
-//router.get('/api/v1/todos', bikeController.readBike);
-
-//Update data
-//router.put('/api/v1/todos/:todo_id', bikeController.updateBike);
-
-//Delete data
-//router.delete('/api/v1/todos/:todo_id', bikeController.deleteBike);
-
 //Cursos
 router.post('/cursos/', cursosController.addCurso); //Adicionar Curso
 router.get('/cursos/', cursosController.listarCursos); //Ler todos os cursos
