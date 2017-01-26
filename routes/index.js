@@ -30,6 +30,10 @@ router.get('/', function(req, res, next) {
 //router.delete('/api/v1/todos/:todo_id', bikeController.deleteBike);
 
 //Cursos
-router.post('/api/v1/curso', cursosController.addCurso);
+router.post('/cursos/', cursosController.addCurso); //Adicionar Curso
+router.get('/cursos/', cursosController.listarCursos); //Ler todos os cursos
+router.get('/cursos/:todo_id', cursosController.listarCurso); //Ler informações de um curso
+router.delete('/cursos/:todo_id', cursosController.delCurso); //Deletar um curso
+router.put('/cursos/:todo_id', cursosController.atualizarCurso); //Atualizar Curso
 
 module.exports = router;
