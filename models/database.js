@@ -4,7 +4,7 @@ var config = {
   user: 'smartclass', //env var: PGUSER
   database: 'smartclass', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database POR ALGUM MOTIVO A PORTA DO LOCALHOST N TAVA FUNCIONANDO
+  host: 'localhost', // Server hosting the postgres database POR ALGUM MOTIVO A PORTA DO LOCALHOST N TAVA FUNCIONANDO
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -40,6 +40,14 @@ var createTableHorariosAula = function() {
   client.connect();
   query = client.query('CREATE TABLE IF NOT EXISTS horarios_aula(semestre INTEGER NOT NULL, turno VARCHAR(1) NOT NULL,materia1 VARCHAR(40), materia2 VARCHAR(40), materia3 VARCHAR(40), n_curso INTEGER NOT NULL, dia_semana INTEGER NOT NULL)');
   query.on('end', () => { client.end(); console.log("Tabela horarios_aula criada com sucesso\n");});
+};
+
+var createTableHorariosAula = function() {
+  const client = new pg.Client(config);
+
+  client.connect();
+  query = client.query('CREATE TABLE IF NOT EXISTS salas(local VARCHAR(30) NOT NULL, sala VARCHAR(6) NOT NULL,prof_em_sala BIT');
+  query.on('end', () => { client.end(); console.log("Tabela salas criada com sucesso\n");});
 };
 
 createTableEmentas();
