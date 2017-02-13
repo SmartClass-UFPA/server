@@ -25,4 +25,23 @@ router.get('/cursos/:todo_id', cursosController.listarCurso); //Ler informaçõe
 router.delete('/cursos/:todo_id', cursosController.delCurso); //Deletar um curso
 router.put('/cursos/:todo_id', cursosController.atualizarCurso); //Atualizar Curso
 
+//Ementas
+/*
+Ementas:
+	/ementa/$n_curso/  localhost:3000/ementa/123
+		Get - Todas as matérias do curso
+		Delete - Deleta  ementa do curso
+		Post - Adiciona uma nova matéria a ementa
+
+	/ementa/$n_curso/$semestre/
+		Get - Todas as matérias do semestre
+
+	/ementa/$n_curso/$cod_materia
+		Get - Informações da matéria
+		Delete - Deleta a matéria
+		Update - Atualiza informações da matéria
+
+*/
+//router.post('/ementas/:todo_id', cursosController.addEmenta);
+
 module.exports = router;

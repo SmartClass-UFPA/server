@@ -66,7 +66,7 @@ exports.readEmenta = function(req, res, next) {
 }
 
 // Update bike
-exports.atualizarEmenta = function(req, res, next) {
+exports.updateEmenta = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters and from http requester
   const data = {n_curso: req.body.n_curso, semestre: req.body.semestre, materia: req.body.materia, assuntos: req.body.assuntos, livros: req.body.livros, ch: req.body.ch, cod: req.bpdy.cod};
