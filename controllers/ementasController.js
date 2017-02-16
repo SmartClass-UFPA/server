@@ -41,8 +41,9 @@ exports.addEmenta = function(req, res, next) {
 }
 
 // Ler Ementa de um Curso
-exports.readEmenta = function(req, res, next) {
+exports.listarEmenta = function(req, res, next) {
   const results = [];
+  const id_curso = req.params.n_curso;
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
     // Handle connection errors
@@ -52,7 +53,61 @@ exports.readEmenta = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) ORDER BY id ASC;');
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) ORDER BY id ASC;', [id_curso]);
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+}
+
+// Ler Ementa de um Curso
+exports.listarEmentas = function(req, res, next) {
+  const results = [];
+  const id_curso = req.params.n_curso;
+  const id_semestre = req.params.semestre;
+  // Get a Postgres client from the connection pool
+  pg.connect(config, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND semestre=($2) ORDER BY id ASC;', [id_curso, id_semestre]);
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+}
+
+// Ler Ementa de uma Materiaaaaaaaaa
+exports.listarEmentaMateria = function(req, res, next) {
+  const results = [];
+  const id_curso = req.params.n_curso;
+  const id_materia = req.params.materia;
+  // Get a Postgres client from the connection pool
+  pg.connect(config, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Select Data
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND materia=($2) ORDER BY id ASC;', [id_curso, id_materia]);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -100,7 +155,7 @@ exports.updateEmenta = function(req, res, next) {
 exports.delEmenta = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters
-  const id = req.params.todo_id;
+  const id = req.params.n_curso;
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
     // Handle connection errors
@@ -111,6 +166,36 @@ exports.delEmenta = function(req, res, next) {
     }
     // SQL Query > Delete Data
     client.query('DELETE FROM ementas WHERE n_curso=($1)', [id]);
+    // SQL Query > Select Data
+    var query = client.query('SELECT * FROM ementas ORDER BY n_curso ASC');
+    // Stream results back one row at a time
+    query.on('row', (row) => {
+      results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', () => {
+      done();
+      return res.json(results);
+    });
+  });
+}
+
+//Delete materia
+exports.delEmentaMateria = function(req, res, next) {
+  const results = [];
+  // Grab data from the URL parameters
+  const id = req.params.n_curso;
+  const id_materia = req.params.materia;
+  // Get a Postgres client from the connection pool
+  pg.connect(config, (err, client, done) => {
+    // Handle connection errors
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({success: false, data: err});
+    }
+    // SQL Query > Delete Data
+    client.query('DELETE FROM ementas WHERE n_curso=($1) AND materia=($2)', [id, id_materia]);
     // SQL Query > Select Data
     var query = client.query('SELECT * FROM ementas ORDER BY n_curso ASC');
     // Stream results back one row at a time

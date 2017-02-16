@@ -35,22 +35,14 @@ router.delete('/horarios/:todo_id/:semestre/:turno', horarios.delHorario);
 router.put('/horarios/:todo_id/:semestre/:turno', horarios.atualizarHorario);
 
 //Ementas
-/*
-Ementas:
-	/ementa/$n_curso/  localhost:3000/ementa/123
-		Get - Todas as matérias do curso
-		Delete - Deleta  ementa do curso
-		Post - Adiciona uma nova matéria a ementa
 
-	/ementa/$n_curso/$semestre/
-		Get - Todas as matérias do semestre
+router.post('/ementas/', cursosController.addEmenta);
+router.put('ementas/', cursosController.updateEmenta);
+router.get('/ementas/n_curso', cursosController.listarEmenta);
+router.delete('/ementas/:n_curso', cursosController.delEmenta);
+router.get('/ementas/:n_curso/:semestre', cursosController.listarEmentas);
+router.get('/ementas/:n_curso/:materia', cursosController.listarEmentaMateria);
+router.post('ementas/:n_curso/:materia', cursosController.delEmentaMateria);
 
-	/ementa/$n_curso/$cod_materia
-		Get - Informações da matéria
-		Delete - Deleta a matéria
-		Update - Atualiza informações da matéria
-
-*/
-//router.post('/ementas/:todo_id', cursosController.addEmenta);
 
 module.exports = router;
