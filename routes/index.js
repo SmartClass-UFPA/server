@@ -3,7 +3,8 @@ const router = express.Router();
 const pg = require('pg');
 const path = require('path');
 const cursosController = require('../controllers/cursosController');
-const horarios = require('../controllers/horariosAulaController')
+const horarios = require('../controllers/horariosAulaController');
+const ementas = require('../controllers/ementasController');
 
 var config = {
   user: 'postgres', //env var: PGUSER
@@ -36,13 +37,13 @@ router.put('/horarios/:todo_id/:semestre/:turno', horarios.atualizarHorario);
 
 //Ementas
 
-router.post('/ementas/', cursosController.addEmenta);
-router.put('ementas/', cursosController.updateEmenta);
-router.get('/ementas/n_curso', cursosController.listarEmenta);
-router.delete('/ementas/:n_curso', cursosController.delEmenta);
-router.get('/ementas/:n_curso/:semestre', cursosController.listarEmentas);
-router.get('/ementas/:n_curso/:materia', cursosController.listarEmentaMateria);
-router.post('ementas/:n_curso/:materia', cursosController.delEmentaMateria);
+router.post('/ementas/', ementas.addEmenta);
+router.put('ementas/', ementas.updateEmenta);
+router.get('/ementas/n_curso', ementas.listarEmenta);
+router.delete('/ementas/:n_curso', ementas.delEmenta);
+router.get('/ementas/:n_curso/:semestre', ementas.listarEmentas);
+router.get('/ementas/:n_curso/:materia', ementas.listarEmentaMateria);
+router.post('ementas/:n_curso/:materia', ementas.delEmentaMateria);
 
 
 module.exports = router;
