@@ -1,0 +1,20 @@
+bd:
+  image: cleversonahum/ndn-traffic
+  net: smartclass
+  stdin_open: true
+  ports:
+  - "5432:5432"
+  environment:
+    POSTGRES_PASSWORD: mysecretpassword
+    POSTGRES_USER: smartclass
+    POSTGRES_DB: smartclass
+  
+server:
+  image: cleversonahum/ndn-traffic
+  net: smartclass
+  working_dir: /home/server
+  stdin_open: true
+  volumes:
+  - ./server/:/home/server
+  ports:
+  - "3000:3000"
