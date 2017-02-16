@@ -3,6 +3,8 @@ const router = express.Router();
 const pg = require('pg');
 const path = require('path');
 const cursosController = require('../controllers/cursosController');
+const horarios = require('../controllers/horariosAulaController')
+
 var config = {
   user: 'postgres', //env var: PGUSER
   database: 'postgres', //env var: PGDATABASE
@@ -24,6 +26,13 @@ router.get('/cursos/', cursosController.listarCursos); //Ler todos os cursos
 router.get('/cursos/:todo_id', cursosController.listarCurso); //Ler informações de um curso
 router.delete('/cursos/:todo_id', cursosController.delCurso); //Deletar um curso
 router.put('/cursos/:todo_id', cursosController.atualizarCurso); //Atualizar Curso
+
+//Horarios
+router.post('/horarios/', horarios.addHorario);
+router.get('/horarios/', horarios.listarHorarios);
+router.get('/horarios/:todo_id/:semestre/:turno', horarios.exibeHorario);
+router.delete('/horarios/:todo_id/:semestre/:turno', horarios.delHorario);
+router.put('/horarios/:todo_id/:semestre/:turno', horarios.atualizarHorario);
 
 //Ementas
 /*
