@@ -1,4 +1,7 @@
 # server
+
+[![Build Status](https://travis-ci.org/SmartClass-UFPA/server.svg?branch=master)](https://travis-ci.org/SmartClass-UFPA/server)
+
 Contém os arquivos relacionados ao servidor e as API's.
 
 Para criar as tabelas, o arquivo a ser alterado é o ```/models/database.js```
