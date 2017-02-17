@@ -5,12 +5,13 @@ const path = require('path');
 const cursosController = require('../controllers/cursosController');
 const horarios = require('../controllers/horariosAulaController');
 const ementas = require('../controllers/ementasController');
+const salas = require('../controllers/salasController');
 
 var config = {
   user: 'postgres', //env var: PGUSER
   database: 'postgres', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database
+  host: '172.17.0.3', // Server hosting the postgres database
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -36,14 +37,19 @@ router.delete('/horarios/:todo_id/:semestre/:turno', horarios.delHorario);
 router.put('/horarios/:todo_id/:semestre/:turno', horarios.atualizarHorario);
 
 //Ementas
-
 router.post('/ementas/', ementas.addEmenta);
-router.put('ementas/', ementas.updateEmenta);
-router.get('/ementas/n_curso', ementas.listarEmenta);
+router.put('/ementas/', ementas.updateEmenta);
+router.get('/ementas/:n_curso', ementas.listarEmenta);
 router.delete('/ementas/:n_curso', ementas.delEmenta);
 router.get('/ementas/:n_curso/:semestre', ementas.listarEmentas);
-router.get('/ementas/:n_curso/:materia', ementas.listarEmentaMateria);
-router.post('ementas/:n_curso/:materia', ementas.delEmentaMateria);
+router.get('/ementas/:n_curso/materia/:materia', ementas.listarEmentaMateria);
+router.delete('/ementas/:n_curso/materia/:materia', ementas.delEmentaMateria);
+
+//Salas
+router.post('/salas/', salas.addSala);
+router.get('/salas/:local/:sala', salas.readSala);
+router.delete('/salas/:local/:sala', salas.delSala);
+router.post('/salas/:local/:sala/:status', salas.updateStatus);
 
 
 module.exports = router;

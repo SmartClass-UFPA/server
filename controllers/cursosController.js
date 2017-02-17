@@ -4,7 +4,7 @@ var config = {
   user: 'smartclass', //env var: PGUSER
   database: 'smartclass', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database (IP do BD)
+  host: '172.17.0.3', // Server hosting the postgres database (IP do BD)
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -91,7 +91,7 @@ exports.listarCurso = function(req, res, next) {
   });
 }
 
-// Update bike
+// Atualizar curso
 exports.atualizarCurso = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters and from http requester

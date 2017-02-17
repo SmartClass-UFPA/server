@@ -4,7 +4,7 @@ var config = {
   user: 'smartclass', //env var: PGUSER
   database: 'smartclass', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database (IP do BD)
+  host: '172.17.0.3', // Server hosting the postgres database (IP do BD)
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -14,7 +14,7 @@ var config = {
 exports.addSala = function(req, res, next) {
   const results = [];
   // Grab data from http request
-  const data = {local: req.body.local, nome_sala: req.body.nome_sala};
+  const data = {local: req.body.local, sala: req.body.sala};
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
     // Handle connection errors
@@ -24,9 +24,15 @@ exports.addSala = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Insert Data
-    client.query( 'INSERT INTO salas (local,nome_sala) values ($1, $2)',
-    [data.local, data.nome_sala]);
+    client.query( 'INSERT INTO salas (local,sala) values ($1, $2)',[data.local, data.sala]);
     // After all data is returned, close connection and return results
+
+    const query = client.query('SELECT * FROM salas ORDER BY local ASC');
+
+    query.on('row', (row) => {
+      results.push(row);
+    });
+
     query.on('end', () => {
       done();
       return res.json(results);
@@ -38,7 +44,7 @@ exports.addSala = function(req, res, next) {
 exports.readSala = function(req, res, next) {
   const results = [];
   const local = req.params.local;
-  const nome_sala = req.params.nome_sala;
+  const sala = req.params.sala;
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
     // Handle connection errors
@@ -48,7 +54,7 @@ exports.readSala = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * WHERE local=($1) AND nome_sala=($2)', [local, nome_sala]);
+    const query = client.query('SELECT * FROM salas WHERE local=($1) AND sala=($2)', [local, sala]);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -65,7 +71,7 @@ exports.readSala = function(req, res, next) {
 exports.delSala = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters
-  const nome_sala = req.params.nome_sala;
+  const sala = req.params.sala;
   const local = req.params.local;
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
@@ -76,9 +82,9 @@ exports.delSala = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Delete Data
-    client.query('DELETE FROM salas WHERE local=($1) AND nome_sala=($2)', [local,nome_sala]);
+    client.query('DELETE FROM salas WHERE local=($1) AND sala=($2)', [local,sala]);
     // SQL Query > Select Data
-    var query = client.query('SELECT * FROM salas ORDER BY nome_sala ASC');
+    var query = client.query('SELECT * FROM salas ORDER BY sala ASC');
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -91,157 +97,13 @@ exports.delSala = function(req, res, next) {
   });
 }
 
-//Pegar Temperatura da Sala
-//---------------------Verificar Variável de temperatura---------------------
-exports.readTempSala = function(req, res, next) {
-  const results = [];
-  const local = req.params.local;
-  const nome_sala = req.params.nome_sala;
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('SELECT temp WHERE local=($1) AND nome_sala=($2)', [local, nome_sala]);
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-      return res.json(results);
-    });
-  });
-}
-
-//Altera Valor da Temperatura
-exports.updateTemp= function(req, res, next) {
-  const results = [];
-  // Grab data from the URL parameters and from http requester
-  const data = {local: req.body.local, nome_sala: req.body.nome_sala, temp: req.body.temp};
-
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Update Data
-    client.query('UPDATE salas SET temp=($1) WHERE local=($2) AND nome_sala=($3)',
-    [data.temp, data.local, data.nome_sala]);
-    // SQL Query > Select Data
-    const query = client.query("SELECT * FROM salas ORDER BY nome_sala ASC");
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', function() {
-      done();
-      return res.json(results);
-    });
-  });
-}
-
-//Chuva
-//-------------------------------Verificar Variável Chuva-------------
-exports.readChuvaSala = function(req, res, next) {
-  const results = [];
-  const local = req.params.local;
-  const nome_sala = req.params.nome_sala;
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('SELECT chuva WHERE local=($1) AND nome_sala=($2)', [local, nome_sala]);
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-      return res.json(results);
-    });
-  });
-}
-
-//Update Chuva
-exports.updateChuva= function(req, res, next) {
-  const results = [];
-  // Grab data from the URL parameters and from http requester
-  const data = {local: req.body.local, nome_sala: req.body.nome_sala, chuva: req.body.chuva};
-
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Update Data
-    client.query('UPDATE salas SET chuva=($1) WHERE local=($2) AND nome_sala=($3)',
-    [data.chuva, data.local, data.nome_sala]);
-    // SQL Query > Select Data
-    const query = client.query("SELECT * FROM salas ORDER BY nome_sala ASC");
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', function() {
-      done();
-      return res.json(results);
-    });
-  });
-}
 
 //Status Professor
-//---------------------Fazer-----------------------
-exports.readStatus = function(req, res, next) {
-  const results = [];
-  const local = req.params.local;
-  const nome_sala = req.params.nome_sala;
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Select Data
-    const query = client.query('SELECT status WHERE local=($1) AND nome_sala=($2)', [local, nome_sala]);
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-      return res.json(results);
-    });
-  });
-}
-
 //Update Status
 exports.updateStatus= function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters and from http requester
-  const data = {local: req.body.local, nome_sala: req.body.nome_sala, status: req.body.status};
+  const data = {local: req.params.local, sala: req.params.sala, status: req.params.status};
 
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
@@ -252,10 +114,10 @@ exports.updateStatus= function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Update Data
-    client.query('UPDATE salas SET status=($1) WHERE local=($2) AND nome_sala=($3)',
-    [data.chuva, data.local, data.nome_sala]);
+    client.query('UPDATE salas SET prof_em_sala=($1) WHERE local=($2) AND sala=($3)',
+    [data.status, data.local, data.sala]);
     // SQL Query > Select Data
-    const query = client.query("SELECT * FROM salas ORDER BY nome_sala ASC");
+    const query = client.query("SELECT * FROM salas ORDER BY local ASC");
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);

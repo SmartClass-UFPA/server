@@ -4,7 +4,7 @@ var config = {
   user: 'smartclass', //env var: PGUSER
   database: 'smartclass', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database (IP do BD)
+  host: '172.17.0.3', // Server hosting the postgres database (IP do BD)
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -14,7 +14,7 @@ var config = {
 exports.addEmenta = function(req, res, next) {
   const results = [];
   // Grab data from http request
-  const data = {n_curso: req.body.n_curso, semestre: req.body.semestre, materia: req.body.materia, assuntos: req.body.assuntos, livros: req.body.livros, ch: req.body.ch, cod: req.bpdy.cod};
+  const data = {n_curso: req.body.n_curso, semestre: req.body.semestre, materia: req.body.materia, assuntos: req.body.assuntos, livros: req.body.livros, ch: req.body.ch, cod: req.body.cod};
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
     // Handle connection errors
@@ -53,7 +53,7 @@ exports.listarEmenta = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) ORDER BY id ASC;', [id_curso]);
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1);', [id_curso]);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -80,7 +80,7 @@ exports.listarEmentas = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND semestre=($2) ORDER BY id ASC;', [id_curso, id_semestre]);
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND semestre=($2);', [id_curso, id_semestre]);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -107,7 +107,7 @@ exports.listarEmentaMateria = function(req, res, next) {
       return res.status(500).json({success: false, data: err});
     }
     // SQL Query > Select Data
-    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND materia=($2) ORDER BY id ASC;', [id_curso, id_materia]);
+    const query = client.query('SELECT * FROM ementas WHERE n_curso=($1) AND materia=($2);', [id_curso, id_materia]);
     // Stream results back one row at a time
     query.on('row', (row) => {
       results.push(row);
@@ -124,7 +124,7 @@ exports.listarEmentaMateria = function(req, res, next) {
 exports.updateEmenta = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters and from http requester
-  const data = {n_curso: req.body.n_curso, semestre: req.body.semestre, materia: req.body.materia, assuntos: req.body.assuntos, livros: req.body.livros, ch: req.body.ch, cod: req.bpdy.cod};
+  const data = {n_curso: req.body.n_curso, semestre: req.body.semestre, materia: req.body.materia, assuntos: req.body.assuntos, livros: req.body.livros, ch: req.body.ch, cod: req.body.cod};
 
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {

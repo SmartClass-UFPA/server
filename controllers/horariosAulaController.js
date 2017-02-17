@@ -4,7 +4,7 @@ var config = {
   user: 'smartclass', //env var: PGUSER
   database: 'smartclass', //env var: PGDATABASE
   password: 'mysecretpassword', //env var: PGPASSWORD
-  host: '172.17.0.2', // Server hosting the postgres database (IP do BD)
+  host: '172.17.0.3', // Server hosting the postgres database (IP do BD)
   port: 5432, //env var: PGPORT
   max: 10, // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
@@ -98,8 +98,11 @@ exports.exibeHorario = function(req, res, next) {
 // Update Time
 exports.atualizarHorario = function(req, res, next) {
   const results = [];
+  const id = req.params.todo_id;
+  const semes = req.params.semestre;
+  const turn = req.params.turno;
   // Grab data from the URL parameters and from http requester
-  const data = {semestre: req.body.semestre, turno: req.body.turno, materia1: req.body.materia1, materia2: req.body.materia2, materia3: req.body.materia3, n_curso: req.body.n_curso, dia_semana: req.body.dia_semana};
+  const data = {semestre: semes, turno: turn, materia1: req.body.materia1, materia2: req.body.materia2, materia3: req.body.materia3, n_curso: id, dia_semana: req.body.dia_semana};
 
   // Get a Postgres client from the connection pool
   pg.connect(config, (err, client, done) => {
