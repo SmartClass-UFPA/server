@@ -159,7 +159,7 @@ exports.delAtividade = function(req, res, next) {
   });
 }
 
-//Delete Atividades da materia
+//Delete Todas Atividades da materia
 exports.delAtividade = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters
