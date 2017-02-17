@@ -6,6 +6,7 @@ const cursosController = require('../controllers/cursosController');
 const horarios = require('../controllers/horariosAulaController');
 const ementas = require('../controllers/ementasController');
 const salas = require('../controllers/salasController');
+const atividades = require('../controllers/atividadesController');
 
 var config = {
   user: 'postgres', //env var: PGUSER
@@ -50,6 +51,14 @@ router.post('/salas/', salas.addSala);
 router.get('/salas/:local/:sala', salas.readSala);
 router.delete('/salas/:local/:sala', salas.delSala);
 router.post('/salas/:local/:sala/:status', salas.updateStatus);
+
+//atividades
+router.post('/atividades/', atividades.addAtividade);
+router.put('/atividades/', atividades.updateAtividades);
+router.get('/atividades/:n_curso/:semestre/:materia', atividades.listarAtividades);
+router.delete('/atividades/:n_curso/:semestre/:materia', atividades.delAtividadeTurno);
+router.get('/atividades/:n_curso/:semestre/:turno/:materia', atividades.listarAtividadesMateria);
+router.delete('/atividades/:n_curso/:semestre/:turno/:materia', atividades.delAtividadeMateria);
 
 
 module.exports = router;

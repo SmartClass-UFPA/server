@@ -41,7 +41,7 @@ exports.addAtividade = function(req, res, next) {
 }
 
 // Ler as atividades cadastradas
-exports.readAtividades = function(req, res, next) {
+exports.listarAtividades = function(req, res, next) {
   const results = [];
   const n_curso = req.params.n_curso;
   const semestre = req.params.semestre;
@@ -69,7 +69,7 @@ exports.readAtividades = function(req, res, next) {
 }
 
 // Ler as atividades cadastradas de uma matéria
-exports.readAtividades = function(req, res, next) {
+exports.listarAtividadesMateria = function(req, res, next) {
   const results = [];
   const n_curso = req.params.n_curso;
   const semestre = req.params.semestre;
@@ -99,7 +99,7 @@ exports.readAtividades = function(req, res, next) {
 
 // Update atividades
 exports.updateAtividades = function(req, res, next) {
-  const results = []; 
+  const results = [];
   // Grab data from the URL parameters and from http requester
   const data = {data_entrega: req.body.data_entrega, materia: req.body.materia, tipo: req.body.tipo, info: req.body.info, semestre: req.body.semestre, turno: req.body.turno, n_curso: req.body.n_curso};
 
@@ -126,10 +126,10 @@ exports.updateAtividades = function(req, res, next) {
       return res.json(results);
     });
   });
-}				
+}
 
 //Delete Atividades da turma
-exports.delAtividade = function(req, res, next) {
+exports.delAtividadeTurno = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters
   const n_curso = req.params.n_curso;
@@ -160,7 +160,7 @@ exports.delAtividade = function(req, res, next) {
 }
 
 //Delete Todas Atividades da materia
-exports.delAtividade = function(req, res, next) {
+exports.delAtividadeMateria = function(req, res, next) {
   const results = [];
   // Grab data from the URL parameters
   const n_curso = req.params.n_curso;
@@ -177,35 +177,6 @@ exports.delAtividade = function(req, res, next) {
     }
     // SQL Query > Delete Data
     client.query('DELETE FROM atividades WHERE n_curso=($1) AND semestre=($2) AND turno=($3) AND materia=($4);', [n_curso,semestre,turno,materia]);
-    // SQL Query > Select Data
-    var query = client.query('SELECT * FROM atividades ORDER BY n_curso ASC');
-    // Stream results back one row at a time
-    query.on('row', (row) => {
-      results.push(row);
-    });
-    // After all data is returned, close connection and return results
-    query.on('end', () => {
-      done();
-      return res.json(results);
-    });
-  });
-}
-
-//Delete uma Atividade da materia
-exports.delAtividade = function(req, res, next) {
-  const results = [];
-  // Grab data from the URL parameters
-  const data = {data_entrega: req.body.data_entrega, materia: req.body.materia, semestre: req.body.semestre, turno: req.body.turno, n_curso: req.body.n_curso};
-  // Get a Postgres client from the connection pool
-  pg.connect(config, (err, client, done) => {
-    // Handle connection errors
-    if(err) {
-      done();
-      console.log(err);
-      return res.status(500).json({success: false, data: err});
-    }
-    // SQL Query > Delete Data
-    client.query('DELETE FROM atividades WHERE n_curso=($1) AND semestre=($2) AND turno=($3) AND materia=($4) AND data_entrega=($5);', [data.n_curso,data.semestre,data.turno,data.materia, data.data_entrega]);
     // SQL Query > Select Data
     var query = client.query('SELECT * FROM atividades ORDER BY n_curso ASC');
     // Stream results back one row at a time
