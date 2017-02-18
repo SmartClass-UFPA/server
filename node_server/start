@@ -1,0 +1,7 @@
+#!/bin/bash
+sleep 10
+npm install;
+node models/database.js;
+node models/database.js;
+node models/database.js;
+npm start;

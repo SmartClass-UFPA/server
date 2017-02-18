@@ -1,0 +1,2 @@
+#!/bin/bash
+docker stop sc_bd sc_server

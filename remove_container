@@ -1,0 +1,2 @@
+#!/bin/bash
+docker rm -f sc_bd sc_server
