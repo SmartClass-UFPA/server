@@ -12,10 +12,10 @@ bd:
 server:
   image: node
   net: smartclass
-  working_dir: /home/server
+  working_dir: /home/node_server
   stdin_open: true
   volumes:
-  - ./server/:/home/server
+  - ./node_server/:/home/node_server
   ports:
   - "3000:3000"
   command: ./start

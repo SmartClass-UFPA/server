@@ -1,7 +1,7 @@
 #!/bin/bash
 docker network create smartclass;
-docker run --name sc_bd --network smartclass -d -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_USER=smartclass -e POSTGRES_DB=smartclass -d postgres;
-docker run --name sc_server -i -d --network smartclass -p 3000:3000 -v `pwd`/node_server:/home/node_server/ -w /home/node_server node;
+docker run --name sc_bd_1 --network smartclass -d -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -e POSTGRES_USER=smartclass -e POSTGRES_DB=smartclass -d postgres;
+docker run --name sc_server_1 -i -d --network smartclass -p 3000:3000 -v `pwd`/node_server:/home/node_server/ -w /home/node_server node;
 sleep 10
 docker exec -it sc_server bash ./start
 #/home/cleversonahum/Documents/SmartClass/server/node_server

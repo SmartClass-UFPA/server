@@ -1,2 +1,2 @@
 #!/bin/bash
-docker stop sc_bd sc_server
+docker stop sc_bd_1 sc_server_1

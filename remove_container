@@ -1,2 +1,2 @@
 #!/bin/bash
-docker rm -f sc_bd sc_server
+docker rm -f sc_bd_1 sc_server_1
