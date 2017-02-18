@@ -1,4 +1,4 @@
-# server
+# Server
 
 [![Build Status](https://travis-ci.org/SmartClass-UFPA/server.svg?branch=master)](https://travis-ci.org/SmartClass-UFPA/server)
 
