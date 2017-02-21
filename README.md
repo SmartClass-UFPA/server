@@ -4,6 +4,8 @@
 
 ## Rodando o Servidor e o BD:
 
+Rode o comando ```docker network create smartclass```
+
 Método 1 (RECOMENDADO - usando o Docker-Compose) => executar ```docker-compose -p sc up```
 
 Método 2 (sem usa o docker-compose, precisa estar no linux e ter o docker instalado) => rodar o script "run", exemplo ```./run```, caso queira remover os container pode ser usado o script ```./remove_container```.
